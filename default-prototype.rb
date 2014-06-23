@@ -4,7 +4,11 @@ inject_into_file 'Gemfile', after: "source 'https://rubygems.org'\n" do
   "ruby File.read '.ruby-version'\n\n"
 end
 
-file '.ruby-version', '2.1.0'
+file '.ruby-version', '2.1.2gsub_file 'Gemfile', <<-TURBO, ''
+# # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+# gem 'turbolinks'
+# TURBO
+# gsub_file 'app/assets/javascripts/application.js', "//= require turbolinks\n", '''
 
 gem 'devise'
 gem 'twitter-bootstrap-rails'
@@ -55,13 +59,6 @@ ERRORS
 generate "devise:install"
 generate "devise User"
 
-# Remove turbolinks
-gsub_file 'Gemfile', <<-TURBO, ''
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-TURBO
-gsub_file 'app/assets/javascripts/application.js', "//= require turbolinks\n", ''
-
 # Clean database.yml
 gsub_file 'config/database.yml', /  username: \S+\n  password:\n/, ''
 
@@ -74,5 +71,5 @@ route 'root to: "application#show"'
 # Git
 git :init
 git add: "."
-git commit: "-a -m 'F1 Prototype'"
+git commit: "-a -m 'Initial commit.'"
 
